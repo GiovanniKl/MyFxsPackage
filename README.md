@@ -1,5 +1,7 @@
 # MyFxsPackage
-Package of useful functions for Python 3.7.
+Package of useful functions for Python 3.7, mostly used for experimental data analysis.
+
+*Warning: Czech words included!*
 
 ## List of functions
 ### `getr2(y, yfit)`
