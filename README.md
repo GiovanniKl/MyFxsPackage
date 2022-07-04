@@ -34,9 +34,9 @@ Calculate mean and standard deviation from a list of measurements using 95% conf
 - `xs` array-like of experimental data (e.g. floats)
 - `nejb` array-like (optional) of type B uncertainties (e.g. floats)
 - `quantity` string (optional) containing quantity name
-- `units` - string (optional) containing units name
-- `otype` - string (optional), valid `format_spec` after ":", e.g. `"03.2f"`
-- `out` - bool (optional), whether to print results in the terminal (if `False`, previous three arguments are not used)
+- `units` string (optional) containing units name
+- `otype` string (optional), valid `format_spec` after ":", e.g. `"03.2f"`
+- `out` bool (optional), whether to print results in the terminal (if `False`, previous three arguments are not used)
 
 Returns: 
 - `xbar` float, mean value of `xs`
@@ -44,6 +44,6 @@ Returns:
 
 ### `prin(t, do=50, o=2)`
 Print desired text into the shell, centered and filled with asteriscs (*) to the length d.
--  `t` - string, text to print for best appearance shorter than d
-- `d` - int (optional), length of the full row
-- `o` - int (optional), minimal offset/padding at the beggining when k > d-o
+-  `t` string, text to print for best appearance shorter than d
+- `d` int (optional), length of the full row
+- `o` int (optional), minimal offset/padding at the beggining when k > d-o
