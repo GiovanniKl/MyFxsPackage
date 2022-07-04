@@ -41,3 +41,9 @@ Calculate mean and standard deviation from a list of measurements using 95% conf
 Returns: 
 - `xbar` float, mean value of `xs`
 - `nej` float, standard deviation
+
+### `prin(t, do=50, o=2)`
+Print desired text into the shell, centered and filled with asteriscs (*) to the length d.
+-  `t` - string, text to print for best appearance shorter than d
+- `d` - int (optional), length of the full row
+- `o` - int (optional), minimal offset/padding at the beggining when k > d-o

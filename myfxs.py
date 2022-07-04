@@ -134,3 +134,19 @@ def vypoctinejistotu(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
         print("*"*35)
     return xbar, nej
 
+
+def prin(t, d = 50, o = 2):
+    # Function to print desired text into the shell, centered and filled with
+    #   asteriscs (*).
+    # t - string, text to print for best appearance shorter than d
+    # d - int (optional), length of the full row
+    # o - int (optional), minimal offset/padding at the beggining when k > d-o
+    # (if len(t)>d-o*2: len(row)=len(t)+o)
+    k = len(t)
+    if k < d-o*2-2:
+        print("*"*((d-k)//2+(d-k) % 2-1)+" "+t+" "+"*"*((d-k)//2-1))
+    elif k < d-o-2:
+        print("*"*o+" "+t+" "+"*"*(d-k-o-2))
+    else:
+        print("*"*o+" "+t)
+
