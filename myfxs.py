@@ -8,7 +8,7 @@ Sorry for Czech comments. Sometimes they seem apropriate.
 There is no guarantee of compatibility with scripts using this module written
 before last update.
 Created by Jan Klíma on 2022-03-04.
-Updated on 2022-03-27.
+Updated on 2022-07-05.
 """
 
 
@@ -135,18 +135,28 @@ def vypoctinejistotu(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
     return xbar, nej
 
 
-def prin(t, d = 50, o = 2):
+def prin(t, d = 50, o = 2, ws=True):
     # Function to print desired text into the shell, centered and filled with
-    #   asteriscs (*).
+    #   asteriscs (*) to the length d, padded with space before and after the
+    #   text if ws=True.
     # t - string, text to print for best appearance shorter than d
     # d - int (optional), length of the full row
     # o - int (optional), minimal offset/padding at the beggining when k > d-o
+    # ws - bool (optional), padding the text with one whitespace on each side
     # (if len(t)>d-o*2: len(row)=len(t)+o)
     k = len(t)
-    if k < d-o*2-2:
-        print("*"*((d-k)//2+(d-k) % 2-1)+" "+t+" "+"*"*((d-k)//2-1))
-    elif k < d-o-2:
-        print("*"*o+" "+t+" "+"*"*(d-k-o-2))
+    if ws:
+        if k < d-o*2-2:
+            print("*"*((d-k)//2+(d-k) % 2-1)+" "+t+" "+"*"*((d-k)//2-1))
+        elif k < d-o-2:
+            print("*"*o+" "+t+" "+"*"*(d-k-o-2))
+        else:
+            print("*"*o+" "+t)
     else:
-        print("*"*o+" "+t)
+        if k < d-o*2:
+            print("*"*((d-k)//2+(d-k) % 2)+t+" "+"*"*(d-k)//2)
+        elif k < d-o:
+            print("*"*o+t+"*"*(d-k-o))
+        else:
+            print("*"*o+t)
 

@@ -43,7 +43,8 @@ Returns:
 - `nej` float, standard deviation
 
 ### `prin(t, do=50, o=2)`
-Print desired text into the shell, centered and filled with asteriscs (*) to the length d.
--  `t` string, text to print for best appearance shorter than d
+Print desired text into the shell, centered and filled with asteriscs (*) to the length d, padded with space before and after the text.
+-  `t` string, text to print, for best appearance shorter than `d-o-2`
 - `d` int (optional), length of the full row
-- `o` int (optional), minimal offset/padding at the beggining when k > d-o
+- `o` int (optional), minimal offset/padding at the beggining when `len(t) > d-o-2`
+- `ws` bool (optional), padding the text with one whitespace on each side
