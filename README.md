@@ -42,7 +42,7 @@ Returns:
 - `xbar` float, mean value of `xs`
 - `nej` float, standard deviation
 
-### `prin(t, do=50, o=2)`
+### `prin(t, do=50, o=2, ws=True)`
 Print desired text into the shell, centered and filled with asteriscs (*) to the length d, padded with space before and after the text.
 -  `t` string, text to print, for best appearance shorter than `d-o-2`
 - `d` int (optional), length of the full row
