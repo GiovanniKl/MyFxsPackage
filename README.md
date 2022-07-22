@@ -1,5 +1,8 @@
-# MyFxsPackage
+This project includes two packages, both include convenient functions but are separated for performance reasons due to the use of different dependencies. They are MyFxs and MyImages.
+
+# MyFxs Package (`myfxs.py`)
 Package of useful functions for Python 3.7, mostly used for experimental data analysis.
+Requires following packages to be installed: `matplotlib`, `numpy`
 
 *Warning: Czech words included!*
 
@@ -48,3 +51,21 @@ Print desired text into the shell, centered and filled with asteriscs (*) to the
 - `d` int (optional), length of the full row
 - `o` int (optional), minimal offset/padding at the beggining when `len(t) > d-o-2`
 - `ws` bool (optional), padding the text with one whitespace on each side
+
+
+# MyImages Package (`myimages.py`)
+Package for image manipulation for Python 3.7, mostly used for batch-processing of images.
+Requires following packages to be installed: `os`, `PIL`, `myfxs`
+
+## List of functions
+### `imresiz()`
+Function for user-driven image resizing. All parameters will be asked on the run. This function resizes images and saves them with scale appended to the name.
+
+Parameters (asked on the run) can modify:
+- processing folder (possible to choose current folder)
+- choosen images from a list (checks for some image formats, not all extensions may be included (you must add the extension to the package script manually or ask me for an update) and not every format may be supported by the `PIL` package, for more details see [PIL documentation](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html))
+- scale (one for all specified images or individual)
+- whether to save images to a specific new folder
+- whether to run another procedure or exit the program
+
+* This function might be improved in the future, e.g. to ask whether to append the scale to the image name or whether to change the processing folder for the next procedure. Please be patient or let me know you would desire such a thing which may make me do it sooner. ;) *
