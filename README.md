@@ -69,3 +69,44 @@ Parameters (asked on the run) can modify:
 - whether to run another procedure or exit the program
 
 * This function might be improved in the future, e.g. to ask whether to append the scale to the image name or whether to change the processing folder for the next procedure. Please be patient or let me know you would desire such a thing which may make me do it sooner. ;) *
+
+## `imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00", align="center center")`
+Function for creating collages of images on a rectangular grid. 
+
+Each image is inserted in its original scale and the size of a position is determined from the largest dimensions of all images or the `box` argument, larger dimensions apply.
+
+- `impaths` list of paths (strings) to every image you want to include
+- `spath` path string to save the final image as
+- `poses` 2-d array (or list of lists) with positions of each image, use 0 where
+no image will be located and index images from 1 (that is their index in `impaths` + 1)
+- `padding` int, number of pixels of padding around each image
+- `box` 2-tuple of int values of size of each position, defaults are largest dimensions of all images
+- `bg` background color hex string in ´"#rrggbbaa"` format
+- `align` location of image in its box, same as in `matplotlib.pyplot.legend`'s argument `loc`
+
+Example of usage:
+
+You have 7 images named from `img0.png` to `img6.png` in two distinct folders and you want to create two collages, i.e. to compare results from both folders. I'd do something like this:
+```Python
+from myimages import imjoin
+
+
+def main():
+    '''Joins given images into a rectangular grid.'''
+    impath = "somefolder/{}/img{}.png"  # image path common to all images
+    folders = ("folder0", "folder1")  # this is optional, I just wanted to do all at once
+    imind = range(7)  # list of indices for images in above specified folders
+    spath = "somefolder/collage{}.png"  # path to the final images
+    poses = [[1, 2, 3], 
+             [4, 5, 6], 
+             [7, 0, 0]]  # shape of the collages
+    for i in folders:
+        impaths = [impath.format(i,j) for j in imind]
+        imjoin(impaths, spath.format(i[-1]), poses, padding=5)
+
+
+if __name__ == "__main__":
+    main()
+
+```
+After that you would have two collages each indexed like the folder from where are its sub-images.

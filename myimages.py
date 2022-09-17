@@ -4,8 +4,8 @@ from PIL import Image
 
 
 def imresiz():
-    # This script resizes pics to whatever (reasonable, e.g. not 0) scale you
-    # want.
+    '''This script resizes pics to whatever (reasonable, e.g. not 0) scale you
+    want in interactive, console-text-input way.'''
     mfs.prin("Welcome to Image Resizer!")
     exts = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".mpeg"]
     do = True
@@ -27,8 +27,8 @@ def imresiz():
                             count += 1
                             ims.append(i)
                 if count == 0:
-                    print("No images found, try different folder or add extension "+
-                          "to list in the script.")
+                    print("No images found, try different folder or add "+
+                          "extension to list in the script.")
                     raise OSError
                 do0 = False
             except OSError:
@@ -106,6 +106,7 @@ def imresiz():
             im.save(os.path.join(pats, ims[i][:ims[i].rfind(".")]+
                                  "_sc{}".format(scal[j]).replace(".", "p")+
                                  ims[i][ims[i].rfind("."):]))
+            im.close()
         mfs.prin("Finished.")
         # repeating procedure
         do0 = True
@@ -121,5 +122,70 @@ def imresiz():
                 print("Wrong input format, please try again.")
 
 
-if __name__ == "__main__":
-    imresiz()
+def imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00",
+           align="center center"):
+    '''Joins given images into a predefined rectangular grid and saves the
+    final image. Favourable format is PNG, compatibility with other images
+    is not guaranteed. This may change in future releases.
+    impaths - list of paths (strings) to every image
+    spath - path string to save the final image
+    poses - 2-d array (or list of lists) with positions of each image, 
+    use 0 where no image will be located and index images from 1
+    padding - int, number of pixels of padding around each image
+    box - 2-tuple of int values of size of each position, default are largest
+    dimensions of all images
+    bg - background color hex string in "#rrggbbaa" format
+    align - location of image in its box, same as in matplotlib legend loc'''
+    ims, size = [Image.open(i) for i in impaths], [0, 0]
+    for i in range(len(impaths)):
+        if ims[i].size[0] > size[0]:
+            size[0] = ims[i].size[0]
+        if ims[i].size[1] > size[1]:
+            size[1] = ims[i].size[1]
+    if box != None:
+        if box[0] > size[0]:
+            size[0] = box[0]
+        if box[1] > size[1]:
+            size[1] = box[1]
+    grid = (len(poses), len(poses[0]))
+    fullsize = (grid[0]*(size[0]+padding*2), grid[1]*(size[1]+padding*2))
+    full = Image.new("RGBA", fullsize, color=bg)
+    for i in range(grid[0]):  # row
+        for j in range(grid[1]):  # column
+            if poses[i][j] == 0:
+                continue
+            else:
+                bp = getboxpos(size, ims[poses[i][j]-1].size, align)
+                full.paste(ims[poses[i][j]-1],
+                           (j*(2*padding+size[0])+padding+bp[0],
+                            i*(2*padding+size[1])+padding+bp[1]))
+    full.save(spath)
+    full.close()
+
+
+def getboxpos(size, imsize, align):
+    '''Calculates position relative to the inner frame of the image's
+    position. Used in the imjoin() function.'''
+    if size == imsize:
+        return (0, 0)
+    elif align == "upper left":
+        return (0, 0)
+    elif align == "center left":
+        return (0, (size[1]-imsize[1])//2)
+    elif align == "lower left":
+        return (0, size[1]-imsize[1])
+    elif align == "upper center":
+        return ((size[0]-imsize[0])//2, 0)
+    elif align == "center center":
+        return ((size[0]-imsize[0])//2, (size[1]-imsize[1])//2)
+    elif align == "lower center":
+        return ((size[0]-imsize[0])//2, size[1]-imsize[1])
+    elif align == "upper right":
+        return (size[0]-imsize[0], 0)
+    elif align == "center right":
+        return (size[0]-imsize[0], (size[1]-imsize[1])//2)
+    elif align == "lower right":
+        return (size[0]-imsize[0], size[1]-imsize[1])
+    else:
+        raise Exception("The align argument getboxpos() has wrong format.")
+
