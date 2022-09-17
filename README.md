@@ -81,7 +81,7 @@ Each image is inserted in its original scale and the size of a position is deter
 no image will be located and index images from 1 (that is their index in `impaths` + 1)
 - `padding` int, number of pixels of padding around each image
 - `box` 2-tuple of int values of size of each position, defaults are largest dimensions of all images
-- `bg` background color hex string in ´"#rrggbbaa"` format
+- `bg` background color hex string in `"#rrggbbaa"` format
 - `align` location of image in its box, same as in `matplotlib.pyplot.legend`'s argument `loc`
 
 Example of usage:
