@@ -72,7 +72,7 @@ Parameters (asked on the run) can modify:
 
 * This function might be improved in the future, e.g. to ask whether to append the scale to the image name or whether to change the processing folder for the next procedure. Please be patient or let me know you would desire such a thing which may make me do it sooner. ;) *
 
-## `imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00", align="center center")`
+### `imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00", align="center center")`
 Function for creating collages of images on a rectangular grid. 
 
 Each image is inserted in its original scale and the size of a position is determined from the largest dimensions of all images or the `box` argument, larger dimensions apply.
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 ```
 After that you would have two collages each indexed like the folder from where are its sub-images.
 
-## `pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None, style="default", reverse=False)`
+### `pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None, style="default", reverse=False)`
 Function that converts image to text. Works best with monospaced fonts.
 
 - `impath` string, path to image
