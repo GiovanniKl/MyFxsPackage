@@ -9,6 +9,7 @@ Requires following packages to be installed: `matplotlib`, `numpy`
 ## List of functions
 ### `getr2(y, yfit)`
 Calculate the coefficient of determination (R squared).
+
 - `y`    numpy-array, list of experimental data
 - `yfit` numpy-array, must be of the same length as `y`, list of fitted values at the same `x` value
 
@@ -17,6 +18,7 @@ Returns:
 
 ### `zaoknem(x)`
 Function for rounding mean and deviation pairs.
+
 - `x` deviation to be rounded
 
 Returns:
@@ -110,3 +112,45 @@ if __name__ == "__main__":
 
 ```
 After that you would have two collages each indexed like the folder from where are its sub-images.
+
+## `pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None, style="default", reverse=False)`
+Function that converts image to text. Works best with monospaced fonts.
+
+- `impath` string, path to image
+- `spath` - string or `None`, string is a path to final .txt file (with extension), `None` signifies the text to be printed in the shell (useful for previews).
+- `iscale` int or 2-tuple (optional), inverse scale of the final image, that is kind of like `(w_new, h_new) = (w, h)//iscale`.
+- `nchars` int (optional), number of different characters to use, equals to number of colors to be recognized. Can be any integer from `2` to `10` (incl.).
+- `chars` string or `None` (optional), str should contain custom characters to map the colors of the image. If given as string, `len(chars)` overwrites `nchars` (`len(chars)` can be larger than `10`).
+- `maxwidth` int or `None` (optional), maximum width of the final image in pixels. If given, the `maxwidth` overwrites the `iscale` parameter (useful for including text-images e.g. in code).
+- `style` string (optional), specifies the character-map theme. Available options are `"default"`, `"hi-contrast"` or `"numbers"`.
+- `reverse` bool (optional). If `True`, reverses the mapping of the image. Default mapping starts with `" "` (blankspace) as white/light color and ends with `"W"` as black/dark color.
+
+With this function you can transform images to text, so you can include them in your code, school notes, etc., for example:
+
+```
+                                 ooooooooo                                 
+                               oo  ooooooooo                               
+                               ooooooooooooo                               
+                                      oooooo                               
+                         ooooooooooooooooooo WWWWW                         
+                         oooooooooooooooooio WWWWWW                        
+                        oooooooooooooooooo  WWWWWWW                        
+                        ooooooo WWWWWWWWWWWWWWWWWWW                        
+                         ooooo WWWWWWWWWWWWWWWWWWW                         
+                          oooo WWWWWWWWWWWWWWWWWW                          
+                               WWWWWWWWWWWWW                               
+                               WWWWWWWWW  WW                               
+                                WWWWWWWWWWWW                               
+                                                                           
+                                     i                                     
+                                  i  i                                     
+                    i   i i    i  i  i   i ii  i  i   i                    
+                    i   i i    i  i  i   i i    i i   i                    
+                    i  ii  i  ii  i  i   i  i  i  i   i                    
+                    i          i                                           
+                    i       ii               
+```
+*Note: The width and height of the final text image is actually a bit different from what is stated in the description. It accounts for the width of the literals which is ca. twice smaller than the line-to-line distance.*
+
+
+

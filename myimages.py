@@ -189,3 +189,73 @@ def getboxpos(size, imsize, align):
     else:
         raise Exception("The align argument getboxpos() has wrong format.")
 
+
+def pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None,
+             style="default", reverse=False):
+    """Function that converts image to text. Works best with monospaced fonts.
+    impath - string, path to image.
+    spath - string or None, string is a path to final .txt file (with
+        extension), None signifies the image to be printed in the shell.
+    iscale - int or 2-tuple, inverse scale of the final image,
+        (wf,hf) = (wi,hi)//iscale.
+    nchars - int, number of different characters to use, equals to number of
+        colors to be recognized. Can be any integer from 2 to 10 (incl.).
+    chars - str or None, str should contain custom characters to map the colors
+        of the image. If given, len(chars) overwrites nchars (len(chars) can be
+        larger than 10).
+    maxwidth - int or None, maximum width of the final image in pixels.
+        If given, the maxwidth overwrites the iscale parameter (useful for
+        including text-images e.g. in code).
+    style - string, specifies the char-map theme. Available options are:
+        "default", "hi-contrast" or "numbers".
+    reverse - bool. If true, reverses the mapping of the image. Default mapping
+        starts with " " (blankspace) as white/light color and ends with "W" as
+        black/dark color.
+    """
+    default = ("", "", " o", " io", " ioW", " ioeW", " .ioeW", " .:ioeW",
+               " .:ioeHW", " .:ioebHW", " .:ioebHBW")
+    hicont = ("", "", " W", "  W", "  WW", "  oWW", "  :oWW", "  .:oWW",
+              "  .:oWWW", "   .:oWWW", "   .:ioWWW")
+    nums = ("0", "01", "012", "0123", "01234", "012345", "0123456", "01234567",
+            "012345678", "0123456789")
+    styles = {"default": default, "hi-contrast": hicont, "numbers": nums}
+    if chars == None:
+        maps = styles[style]
+    else:
+        maps, nchars = [chars]*10, len(chars)
+    im = Image.open(impath)
+    size = im.size
+    if type(maxwidth) == int:
+        w, h = maxwidth, int(size[1]//(size[0]/maxwidth*2))
+    elif type(iscale) == int:
+        w, h = size[0]//iscale, size[1]//(iscale*2)
+    elif type(iscale) == tuple:
+        w, h = size[0]//iscale[0], size[1]//iscale[1]
+    else:
+        raise Exception("The iscale parameter has unsupported format!")
+    im = im.resize((w,h)).quantize(nchars).convert("L")
+    # print(im.getcolors())
+    mappin, colors = dict(), im.getcolors()
+    if len(colors) < nchars:
+        nchars = len(colors)
+    if reverse:
+        for i in range(nchars):
+            mappin[colors[i][1]] = i
+    else:
+        for i in range(nchars):
+            mappin[colors[i][1]] = nchars-1-i
+    # im.show()
+    if spath == None:
+        for j in range(h):
+            st = ""
+            for i in range(w):
+                st += maps[nchars][mappin[im.getpixel((i,j))]]
+            print(st)
+    else:
+        with open(spath, "w+") as file:
+            for j in range(h):
+                for i in range(w):
+                    file.write(maps[nchars][mappin[im.getpixel((i,j))]])
+                file.write("\n")
+    im.close()
+
