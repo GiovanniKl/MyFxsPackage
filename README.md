@@ -2,7 +2,9 @@ This project includes two packages, both include convenient functions but are se
 
 # MyFxs Package (`myfxs.py`)
 Package of useful functions for Python 3.7, mostly used for experimental data analysis.
-Requires following packages to be installed: `matplotlib`, `numpy`
+Requires following packages to be installed: `matplotlib`, `numpy`.
+
+**Disclaimer:** I did not check the compatibility with newer versions. Everything was written using these module versions: `matplotlib 3.4.3`, `numpy 1.21.6`.
 
 *Warning: Czech words included!*
 
@@ -57,7 +59,9 @@ Print desired text into the shell, centered and filled with asteriscs (*) to the
 
 # MyImages Package (`myimages.py`)
 Package for image manipulation for Python 3.7, mostly used for batch-processing of images.
-Requires following packages to be installed: `os`, `PIL`, `myfxs`
+Requires following packages to be installed: `os`, `PIL` (`Pillow`), `myfxs` (for dependencies see above).
+
+**Disclaimer:** I did not check the compatibility with newer versions. Everything was written using these module versions: `Pillow 8.1.2`.
 
 ## List of functions
 ### `imresiz()`
