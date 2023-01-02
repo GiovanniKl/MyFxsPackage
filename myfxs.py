@@ -8,14 +8,15 @@ Sorry for Czech comments. Sometimes they seem apropriate.
 There is no guarantee of compatibility with scripts using this module written
 before last update.
 Created by Jan Klíma on 2022-03-04.
-Updated on 2022-11-08.
+Updated on 2022-01-02.
 """
 
 
 def getr2(y, yfit):
     """Returns sum of residual squares R^2.
-    y - numpy array of experimental data
-    yfit - numpy array of fit data"""
+    y - numpy array of experimental data.
+    yfit - numpy array of fit data.
+    """
     ss_res = np.sum((y - yfit)**2)
     ss_tot = np.sum((y - np.mean(y))**2)
     return 1 - ss_res/ss_tot
@@ -28,7 +29,8 @@ def zaoknem(x):
     Use only positive numbers!
     In previous versions, there was in the first if number 1, which was later
     changed to 3 and short after that replaced with variable koef = 2.95. Some
-    additional changes had to be made (e.g. int()s inside str()s)."""
+    additional changes had to be made (e.g. int()s inside str()s).
+    """
     koef = 2.95
     if x > koef:
         do, i = True, koef*10**1
@@ -57,7 +59,8 @@ def zaoknem(x):
 
 
 def makemyfontnice():
-    """Sets all font types used in plots to look cool (i.e. serif roman/italic).
+    """Sets all font types used in plots to look cool 
+    (i.e. serif roman/italic).
     """
     rcParams["font.family"] = "serif"
     rcParams["mathtext.it"] = "serif:italic"
@@ -80,14 +83,15 @@ def lina(x, a):
 def vypoctinejistotu(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
                      out=True):
     """Calculates standard deviation and mean using 95% confidence interval of
-    Student's distribution.
-    xs - array-like of experimental data
-    nejb - array-like (optional) of type B uncertainties
-    quantity - string (optional) containing quantity name
-    units - string (optional) containing units name
-    otype - string (optional), valid format_spec after ":", e.g. "03.2f"
-    out - bool (optional), whether to print results in the terminal
-    returns xbar (mean value of x) and nej (deviation) as floats"""
+    Student's distribution.  Currently, the output is available only in Czech.
+    xs - array-like of experimental data.
+    nejb - array-like (optional) of type B uncertainties.
+    quantity - string (optional) containing quantity name.
+    units - string (optional) containing units name.
+    otype - string (optional), valid format_spec after ":", e.g. "03.2f".
+    out - bool (optional), whether to print results in the terminal.
+    returns xbar (mean value of x) and nej (deviation) as floats.
+    """
     def koef(n):
         # vraci koeficient 'k' dle t-rozdeleni pro p=95%
         koefsl = [12.71, 4.3, 3.18, 2.78, 2.57, 2.45, 2.36, 2.31, 2.26, 2.23,
@@ -140,11 +144,12 @@ def prin(t, d=50, o=2, ws=True):
     """Function to print desired text into the shell, centered and filled with
     asteriscs (*) to the length d, padded with space before and after the
     text if ws=True.
-    t - string, text to print for best appearance shorter than d
-    d - int (optional), length of the full row
-    o - int (optional), minimal offset/padding at the beggining when k > d-o
+    t - string, text to print for best appearance shorter than d.
+    d - int (optional), length of the full row.
+    o - int (optional), minimal offset/padding at the beggining when k > d-o.
     ws - bool (optional), padding the text with one whitespace on each side
-        (if len(t)>d-o*2: len(row)=len(t)+o)"""
+        (if len(t)>d-o*2: len(row)=len(t)+o).
+    """
     k = len(t)
     if ws:
         if k < d-o*2-2:
@@ -164,7 +169,7 @@ def prin(t, d=50, o=2, ws=True):
             
 def wmean(nominal_values, weights, calculate_uncertainty=True):
     """Function for calculating weighted mean. Can be useful together with 
-    uncertainties package or when calculating uncertainties in general. 
+    uncertainties package or when calculating uncertainties, in general. 
     Can calculate coresponding uncertainty dx, if weights are given as 
     w_i = 1/dx_i**2 for each w_i in weights.
     nominal_values - array-like of nominal values.
