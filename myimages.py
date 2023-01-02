@@ -5,7 +5,8 @@ from PIL import Image
 
 def imresiz():
     """This script resizes pics to whatever (reasonable, e.g. not 0) scale you
-    want in interactive, console-text-input way."""
+    want in interactive, console-text-input way.
+    """
     mfs.prin("Welcome to Image Resizer!")
     exts = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".mpeg"]
     do = True
@@ -125,17 +126,19 @@ def imresiz():
 def imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00",
            align="center center"):
     """Joins given images into a predefined rectangular grid and saves the
-    final image. Favourable format is PNG, compatibility with other images
-    is not guaranteed. This may change in future releases.
-    impaths - list of paths (strings) to every image
-    spath - path string to save the final image
+    final image.  Favourable format is PNG, compatibility with other images
+    is not guaranteed.  This may change in future releases.
+    impaths - list of paths (strings) to every image.
+    spath - path string to save the final image.
     poses - 2-d array (or list of lists) with positions of each image,
-    use 0 where no image will be located and index images from 1
-    padding - int, number of pixels of padding around each image
-    box - 2-tuple of int values of size of each position, default are largest
-    dimensions of all images
-    bg - background color hex string in "#rrggbbaa" format
-    align - location of image in its box, same as in matplotlib legend loc"""
+        use 0 where no image will be located and index images from 1.
+    padding - int, number of pixels of padding around each image.
+    box - 2-tuple of int values of size of all positions, default are largest
+        dimensions out of all images.
+    bg - background color hex string in "#rrggbbaa" format.
+    align - location of image in its box, same as in matplotlib legend loc, 
+        except for "best" option.
+    """
     ims, size = [Image.open(i) for i in impaths], [0, 0]
     for i in range(len(impaths)):
         if ims[i].size[0] > size[0]:
@@ -187,7 +190,7 @@ def getboxpos(size, imsize, align):
     elif align == "lower right":
         return size[0] - imsize[0], size[1] - imsize[1]
     else:
-        raise Exception("The align argument getboxpos() has wrong format.")
+        raise Exception("The align argument in getboxpos() has wrong format.")
 
 
 def pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None,
