@@ -168,7 +168,8 @@ def imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00",
 
 def getboxpos(size, imsize, align):
     """Calculates position relative to the inner frame of the image's
-    position. Used in the imjoin() function."""
+    position. Used in the imjoin() function.
+    """
     if size == imsize:
         return 0, 0
     elif align == "upper left":
