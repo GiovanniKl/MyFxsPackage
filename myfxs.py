@@ -160,3 +160,19 @@ def prin(t, d=50, o=2, ws=True):
             print("*"*o+t+"*"*(d-k-o))
         else:
             print("*"*o+t)
+
+            
+def wmean(nominal_values, weights, calculate_uncertainty=True):
+    """Function for calculating weighted mean. Can be useful together with 
+    uncertainties package or when calculating uncertainties in general. 
+    Can calculate coresponding uncertainty dx, if weights are given as 
+    w_i = 1/dx_i**2 for each w_i in weights.
+    nominal_values - array-like of nominal values.
+    weights - array-like of corresponding weights.  Can be a float, but then 
+        this function serves as a normal mean (e.g. numpy.mean()).
+    calculate_uncertainty - bool (optional), whether to calculate also 
+        the combined uncertainty of nominal_values.
+    """
+    yield np.sum(nominal_values*weights)/np.sum(weights)
+    if calculate_uncertainty:
+        yield np.sqrt(1/np.sum(weights))
