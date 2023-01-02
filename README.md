@@ -12,20 +12,20 @@ Requires following packages to be installed: `matplotlib`, `numpy`.
 ### `getr2(y, yfit)`
 Calculate the coefficient of determination (R squared).
 
-- `y`    numpy-array, list of experimental data
-- `yfit` numpy-array, must be of the same length as `y`, list of fitted values at the same `x` value
+- `y`    numpy-array, list of experimental data.
+- `yfit` numpy-array, must be of the same length as `y`, list of fitted values at the same `x` value.
 
 Returns:
-- `r2`   float, coefficient of determination (not in percents)
+- `r2`   float, coefficient of determination (not in percents).
 
 ### `zaoknem(x)`
 Function for rounding mean and deviation pairs.
 
-- `x` deviation to be rounded
+- `x` deviation to be rounded.
 
 Returns:
-- `x` rounded deviation to one significant digit (except for when the digit (denoted as `d`)  `1 < d < 2.95`, it is rounded to two significant digits)
-- `ind` index used in `round(mean, ind)` or `np.round(mean, ind)` to round the mean (denoted `mean`) according to the deviation
+- `x` rounded deviation to one significant digit (except for when the digit (denoted as `d`)  `1 < d < 2.95`, it is rounded to two significant digits).
+- `ind` index used in `round(mean, ind)` or `np.round(mean, ind)` to round the mean (denoted `mean`) according to the deviation.
 
 ### `makemyfontnice()`
 Set all fonts used in `matplotlib` plots to serif type.
@@ -38,23 +38,23 @@ Linear function $y(x) = ax$. Used often for fitting and regression purposes.
 
 ### `vypoctinejistotu(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g", out=True)`
 Calculate mean and standard deviation from a list of measurements using 95% confidence interval of T distribution.
-- `xs` array-like of experimental data (e.g. floats)
-- `nejb` array-like (optional) of type B uncertainties (e.g. floats)
-- `quantity` string (optional) containing quantity name
-- `units` string (optional) containing units name
-- `otype` string (optional), valid `format_spec` after ":", e.g. `"03.2f"`
-- `out` bool (optional), whether to print results in the terminal (if `False`, previous three arguments are not used)
+- `xs` array-like of experimental data (e.g. floats).
+- `nejb` array-like (optional) of type B uncertainties (e.g. floats).
+- `quantity` string (optional) containing quantity name.
+- `units` string (optional) containing units name.
+- `otype` string (optional), valid `format_spec` after ":", e.g. `"03.2f"`.
+- `out` bool (optional), whether to print results in the terminal (if `False`, previous three arguments are not used).
 
 Returns: 
-- `xbar` float, mean value of `xs`
-- `nej` float, standard deviation
+- `xbar` float, mean value of `xs`.
+- `nej` float, standard deviation.
 
 ### `prin(t, do=50, o=2, ws=True)`
 Print desired text into the shell, centered and filled with asteriscs (*) to the length d, padded with space before and after the text.
--  `t` string, text to print, for best appearance shorter than `d-o-2`
-- `d` int (optional), length of the full row
-- `o` int (optional), minimal offset/padding at the beggining when `len(t) > d-o-2`
-- `ws` bool (optional), padding the text with one whitespace on each side
+-  `t` string, text to print, for best appearance shorter than `d-o-2`.
+- `d` int (optional), length of the full row.
+- `o` int (optional), minimal offset/padding at the beggining when `len(t) > d-o-2`.
+- `ws` bool (optional), padding the text with one whitespace on each side.
 
 ### `wmean(nominal_values, weights, calculate_uncertainty=True)`
 Function for calculating weighted mean. Can be useful together with `uncertainties` package or when calculating uncertainties, in general. Can calculate coresponding uncertainty `dx`, if weights are given as `w_i = 1/dx_i**2` for each `w_i` in `weights`.
@@ -87,14 +87,14 @@ Function for creating collages of images on a rectangular grid.
 
 Each image is inserted in its original scale and the size of a position is determined from the largest dimensions of all images or the `box` argument, larger dimensions apply.
 
-- `impaths` list of paths (strings) to every image you want to include
-- `spath` path string to save the final image as
+- `impaths` list of paths (strings) to every image you want to include.
+- `spath` path string to save the final image as.
 - `poses` 2-d array (or list of lists) with positions of each image, use 0 where
-no image will be located and index images from 1 (that is their index in `impaths` + 1)
-- `padding` int, number of pixels of padding around each image
-- `box` 2-tuple of int values of size of each position, defaults are largest dimensions of all images
-- `bg` background color hex string in `"#rrggbbaa"` format
-- `align` location of image in its box, same as in `matplotlib.pyplot.legend`'s argument `loc`
+no image will be located and index images from 1 (that is their index in `impaths` + 1).
+- `padding` int, number of pixels of padding around each image.
+- `box` 2-tuple of int values of size of each position, defaults are largest dimensions of all images.
+- `bg` background color hex string in `"#rrggbbaa"` format.
+- `align` location of image in its box, same as in `matplotlib.pyplot.legend`'s argument `loc`.
 
 Example of usage:
 
@@ -126,7 +126,7 @@ After that you would have two collages each indexed like the folder from where a
 ### `pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None, style="default", reverse=False)`
 Function that converts image to text. Works best with monospaced fonts.
 
-- `impath` string, path to image
+- `impath` string, path to image.
 - `spath` - string or `None`, string is a path to final .txt file (with extension), `None` signifies the text to be printed in the shell (useful for previews).
 - `iscale` int or 2-tuple (optional), inverse scale of the final image, that is kind of like `(w_new, h_new) = (w, h)//iscale`.
 - `nchars` int (optional), number of different characters to use, equals to number of colors to be recognized. Can be any integer from `2` to `10` (incl.).
