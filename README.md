@@ -56,6 +56,12 @@ Print desired text into the shell, centered and filled with asteriscs (*) to the
 - `o` int (optional), minimal offset/padding at the beggining when `len(t) > d-o-2`
 - `ws` bool (optional), padding the text with one whitespace on each side
 
+### `wmean(nominal_values, weights, calculate_uncertainty=True)`
+Function for calculating weighted mean. Can be useful together with `uncertainties` package or when calculating uncertainties, in general. Can calculate coresponding uncertainty `dx`, if weights are given as `w_i = 1/dx_i**2` for each `w_i` in `weights`.
+- `nominal_values` array-like of nominal values.
+- `weights` array-like of corresponding weights.  Can be a float, but then this function serves as a normal mean (e.g. `numpy.mean()`).
+- `calculate_uncertainty` - bool (optional), whether to calculate also the combined uncertainty of nominal_values.
+
 
 # MyImages Package (`myimages.py`)
 Package for image manipulation for Python 3.7, mostly used for batch-processing of images.
