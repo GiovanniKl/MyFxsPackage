@@ -4,8 +4,8 @@ from PIL import Image
 
 
 def imresiz():
-    """This script resizes pics to whatever (reasonable, e.g. not 0) scale you
-    want in interactive, console-text-input way.
+    """This script resizes pics to whatever (reasonable, e.g. not 0)
+    scale you want in interactive, console-text-input way.
     """
     mfs.prin("Welcome to Image Resizer!")
     exts = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".mpeg"]
@@ -125,19 +125,19 @@ def imresiz():
 
 def imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00",
            align="center center"):
-    """Joins given images into a predefined rectangular grid and saves the
-    final image.  Favourable format is PNG, compatibility with other images
-    is not guaranteed.  This may change in future releases.
+    """Joins given images into a predefined rectangular grid and saves
+    the final image.  Favourable format is PNG, compatibility with other
+    images is not guaranteed. This may change in future releases.
     impaths - list of paths (strings) to every image.
     spath - path string to save the final image.
     poses - 2-d array (or list of lists) with positions of each image,
         use 0 where no image will be located and index images from 1.
     padding - int, number of pixels of padding around each image.
-    box - 2-tuple of int values of size of all positions, default are largest
-        dimensions out of all images.
+    box - 2-tuple of int values of size of each position, default are
+        largest dimensions of all images.
     bg - background color hex string in "#rrggbbaa" format.
-    align - location of image in its box, same as in matplotlib legend loc, 
-        except for "best" option.
+    align - location of image in its box, same as in matplotlib legend
+        loc except for "best" option.
     """
     ims, size = [Image.open(i) for i in impaths], [0, 0]
     for i in range(len(impaths)):
@@ -151,7 +151,7 @@ def imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00",
         if box[1] > size[1]:
             size[1] = box[1]
     grid = (len(poses), len(poses[0]))
-    fullsize = (grid[0]*(size[0]+padding*2), grid[1]*(size[1]+padding*2))
+    fullsize = (grid[1]*(size[0]+padding*2), grid[0]*(size[1]+padding*2))
     full = Image.new("RGBA", fullsize, color=bg)
     for i in range(grid[0]):  # row
         for j in range(grid[1]):  # column
@@ -164,11 +164,13 @@ def imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00",
                             i*(2*padding+size[1])+padding+bp[1]))
     full.save(spath)
     full.close()
+    for i in ims:  # close all used images
+        i.close()
 
 
 def getboxpos(size, imsize, align):
     """Calculates position relative to the inner frame of the image's
-    position. Used in the imjoin() function.
+    position.  Used in the imjoin() function.
     """
     if size == imsize:
         return 0, 0
