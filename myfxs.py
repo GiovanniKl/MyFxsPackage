@@ -22,8 +22,8 @@ def getr2(y, yfit):
     return 1 - ss_res/ss_tot
 
 
-def zaoknem(x):
-    """== ZAOKrouhliNEjistotu(M) (round uncertainty)
+def rounc(x):
+    """== ROund UNCertainty
     Returns rounded uncertainty x and an index ind, where to round the main
     value, e.g. using np.round(x0, ind).
     Use only positive numbers!
@@ -81,20 +81,32 @@ def lina(x, a):
     return a*x
 
 
-def vypoctinejistotu(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
-                     out=True):
-    """Calculates standard deviation and mean using 95% confidence interval of
-    Student's distribution.  Currently, the output is available only in Czech.
+def calcunc(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
+            out=True, stdtype="stddevofmean", lang="CZ"):
+    """Calculates mean and standard deviation (of mean) using 95% confidence
+    interval of Student's distribution.
     xs - array-like of experimental data.
     nejb - array-like (optional) of type B uncertainties.
     quantity - string (optional) containing quantity name.
     units - string (optional) containing units name.
     otype - string (optional), valid format_spec after ":", e.g. "03.2f".
     out - bool (optional), whether to print results in the terminal.
-    returns xbar (mean value of x) and nej (deviation) as floats.
+    sdttype - string (optional), determines whether to calculate standard
+        deviation ("stddev_ub" for unbiased, that is with N-1 in the
+        denominator, or "stddev_b" for biased, with N) or standard deviation
+        of mean ("stddevofmean"). In case of any questions, consult e.g.:
+        https://en.wikipedia.org/wiki/Standard_deviation.
+    lang - string (optional), language of output (has no effect when out=False).
+        Supported languages: "EN", "CZ".
+
+    Returns:
+    xbar (mean value of x) and nej (deviation) as floats.
     """
+    xs, nejb = np.array(xs), np.array(nejb)
+    
     def koef(n):
-        # vraci koeficient 'k' dle t-rozdeleni pro p=95%
+        """Returns the 'k' coeficient of the t-distribution for p=95%.
+        CZ: Vraci koeficient 'k' dle t-rozdeleni pro p=95%."""
         koefsl = [12.71, 4.3, 3.18, 2.78, 2.57, 2.45, 2.36, 2.31, 2.26, 2.23,
                   2.2, 2.18, 2.16, 2.14, 2.13, 2.12, 2.11, 2.1, 2.09, 2.09]
         koefsh = {25: 2.06, 30: 2.04, 35: 2.03, 40: 2.02, 45: 2.01, 50: 2.01,
@@ -118,20 +130,34 @@ def vypoctinejistotu(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
         else:
             ko = koefsh[101]
         return ko
+    
     nmer = len(xs)
     k = koef(nmer)
-    xbar = sum(xs)/nmer
-    # neja = https://en.wikipedia.org/wiki/Standard_deviation#Standard_deviation_
-    #   of_the_mean
-    neja = np.sqrt(1/nmer/(nmer-1)*sum([(el - xbar)**2 for el in xs]))*k
-    nejb = np.sqrt(sum([i**2 for i in nejb]))
+    xbar = np.sum(xs)/nmer
+    if stdtype == "stddevofmean":  # standard deviation of mean
+        neja = np.sqrt(1/nmer/(nmer-1)*np.sum((xs - xbar)**2))*k
+    elif stdtype == "stddev_ub":  # unbiased standard deviation
+        neja = np.sqrt(1/(nmer-1)*np.sum((xs - xbar)**2))*k
+    elif stdtype == "stddev_b":  # biased standard deviation
+        neja = np.sqrt(1/nmer*np.sum((xs - xbar)**2))*k
+    else:
+        raise Exception("Unsupported stdtype value!")
+    nejb = np.sqrt(np.sum(nejb**2))
     nej = np.sqrt(neja**2 + nejb**2)
-    if out:
+    if out and lang == "CZ":
         print("**** Vysledek vypoctu nejistot ****")
         print("Data: {}\nJednotek dat: {}\nPrumer: {}".format(xs, nmer, xbar))
         print("Nejistota A: {}\nk: {}\nNejistota B: {}\nKombinovana: {}"
               .format(neja, k, nejb, nej))
         print("*********** Po uprave: ************")
+    elif out and lang == "EN":
+        print("**** Result of the calculation ****")
+        print("Data: {}\nDatapoints: {}\nMean: {}".format(xs, nmer, xbar))
+        print("Uncertainty A: {}\nk: {}\nUncertainty B: {}\nCombined: {}"
+              .format(neja, k, nejb, nej))
+        print("******** After truncation: ********")
+    else:
+        raise Exception("Unsupported language option!")
     nej, par = zaoknem(nej)
     xbar = round(xbar, par)
     if nej == int(nej):
@@ -184,3 +210,8 @@ def wmean(nominal_values, weights, calculate_uncertainty=True):
     yield np.sum(nominal_values*weights)/np.sum(weights)
     if calculate_uncertainty:
         yield np.sqrt(1/np.sum(weights))
+
+
+# ### Aliases due to compatibility with older versions. ###
+zaoknem = rounc
+vypoctinejistotu = calcunc
