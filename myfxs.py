@@ -32,6 +32,7 @@ def zaoknem(x):
     additional changes had to be made (e.g. int()s inside str()s).
     """
     koef = 2.95
+    assert x > 0, f"Uncertainty must be a (nonzero) positive number! x was {x}"
     if x > koef:
         do, i = True, koef*10**1
         while do:
@@ -120,6 +121,8 @@ def vypoctinejistotu(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
     nmer = len(xs)
     k = koef(nmer)
     xbar = sum(xs)/nmer
+    # neja = https://en.wikipedia.org/wiki/Standard_deviation#Standard_deviation_
+    #   of_the_mean
     neja = np.sqrt(1/nmer/(nmer-1)*sum([(el - xbar)**2 for el in xs]))*k
     nejb = np.sqrt(sum([i**2 for i in nejb]))
     nej = np.sqrt(neja**2 + nejb**2)
