@@ -82,7 +82,7 @@ def lina(x, a):
 
 
 def calcunc(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
-            out=True, stdtype="stddevofmean", lang="CZ"):
+            out=True, stdtype="stddevofmean", lang="EN"):
     """Calculates mean and standard deviation (of mean) using 95% confidence
     interval of Student's distribution.
     xs - array-like of experimental data.
@@ -209,7 +209,7 @@ def wmean(nominal_values, weights, calculate_uncertainty=True):
     """
     yield np.sum(nominal_values*weights)/np.sum(weights)
     if calculate_uncertainty:
-        yield np.sqrt(1/np.sum(weights))
+        yield np.sqrt(1/np.sum(weights))  # is this finished?
 
 
 # ### Aliases due to compatibility with older versions. ###
