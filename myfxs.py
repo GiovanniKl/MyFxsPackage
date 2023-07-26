@@ -156,7 +156,7 @@ def calcunc(xs, nejb=np.zeros(1), quantity="X", units="x", otype="g",
         print("Uncertainty A: {}\nk: {}\nUncertainty B: {}\nCombined: {}"
               .format(neja, k, nejb, nej))
         print("******** After truncation: ********")
-    else:
+    elif out:
         raise Exception("Unsupported language option!")
     nej, par = zaoknem(nej)
     xbar = round(xbar, par)
