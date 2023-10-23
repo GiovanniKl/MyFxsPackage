@@ -62,6 +62,13 @@ Function for calculating weighted mean. Can be useful together with `uncertainti
 - `weights` array-like of corresponding weights.  Can be a float, but then this function serves as a normal mean (e.g. `numpy.mean()`).
 - `calculate_uncertainty` - bool (optional), whether to calculate also the combined uncertainty of nominal_values.
 
+### `altline(x0, y0, r, phi, phiunit="deg")`
+Function for calculating end points of a line from its origin given length and angle. (Angle+Length To LINE)
+- `x0`, `y0` float, (given_length_unit) line-origin coorinates.
+- `r` float, (given_length_unit) line length.
+- `phi` float, (phiunit) angle of the line from x axis.
+- `phiunit` one of `{"rad", "deg"}`, determines phi unit.
+
 
 # MyImages Package (`myimages.py`)
 Package for image manipulation for Python 3.7, mostly used for batch-processing of images.

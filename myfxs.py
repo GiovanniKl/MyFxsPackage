@@ -8,7 +8,7 @@ Sorry for Czech comments. Sometimes they seem apropriate.
 There is no guarantee of compatibility with scripts using this module written
 before last update.
 Created by Jan Klíma on 2022-03-04.
-Updated on 2022-01-02.
+Updated on 2023-10-23.
 """
 
 
@@ -210,6 +210,22 @@ def wmean(nominal_values, weights, calculate_uncertainty=True):
     yield np.sum(nominal_values*weights)/np.sum(weights)
     if calculate_uncertainty:
         yield np.sqrt(1/np.sum(weights))  # is this finished?
+
+
+def altline(x0, y0, r, phi, phiunit="deg"):
+    """Function for calculating end points of a line from its origin
+    given length and angle. (Angle+Length To LINE)
+    x0, y0 - float, (given_length_unit) line-origin coorinates.
+    r - float, (given_length_unit) line length.
+    phi - float, (phiunit) angle of the line from x axis.
+    phiunit - one of {"rad", "deg"}, determines phi unit.
+    """
+    if phiunit == "rad":
+        return x0+r*np.cos(phi), y0+r*np.sin(phi)
+    elif phiunit == "deg":
+        return x0+r*np.cos(phi/180*np.pi), y0+r*np.sin(phi/180*np.pi)
+    else:
+        raise Exception("Unsupported phi unit!")
 
 
 # ### Aliases due to compatibility with older versions. ###
