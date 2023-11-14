@@ -124,7 +124,8 @@ def imresiz():
 
 
 def imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00",
-           align="center center"):
+           align="center center", scale="fitL",
+           scaling_filter=Image.Resampling.BOX):
     """Joins given images into a predefined rectangular grid and saves
     the final image.  Favourable format is PNG, compatibility with other
     images is not guaranteed. This may change in future releases.
@@ -137,19 +138,59 @@ def imjoin(impaths, spath, poses, padding=0, box=None, bg="#ffffff00",
         largest dimensions of all images.
     bg - background color hex string in "#rrggbbaa" format.
     align - location of image in its box, same as in matplotlib legend
-        loc except for "best" option.
+        loc.
+    scale - method to scale images, one of {"fit", "fitL", "stretch"}.
+        "fit" - image will be scaled with preserved aspect ratio to fit
+            the box (smaller images upscaled, larger downscaled).
+        "fitL" - same as "fit" but images smaller than box will not be
+            scaled.
+        "stretch" - images will be stretched to the size of box.
+    scaling_filter - resampling filter used for scaling, valid
+        resampling filters are: NEAREST, BOX, BILINEAR, HAMMING,
+        BICUBIC, LANCZOS (ordered in increasing quality, decr.
+        performance).
     """
     ims, size = [Image.open(i) for i in impaths], [0, 0]
-    for i in range(len(impaths)):
-        if ims[i].size[0] > size[0]:
-            size[0] = ims[i].size[0]
-        if ims[i].size[1] > size[1]:
-            size[1] = ims[i].size[1]
-    if box is not None:
-        if box[0] > size[0]:
-            size[0] = box[0]
-        if box[1] > size[1]:
-            size[1] = box[1]
+    if box is None:
+        for i in range(len(impaths)):
+            if ims[i].size[0] > size[0]:
+                size[0] = ims[i].size[0]
+            if ims[i].size[1] > size[1]:
+                size[1] = ims[i].size[1]
+    else:
+        size = list(box)
+    if scale == "fit":
+        for i in range(len(impaths)):
+            if ims[i].size[0] == size[0] and ims[i].size[1] == size[1]:
+                continue
+            elif ims[i].size[0]/ims[i].size[1] > size[0]/size[1]:
+                ims[i] = ims[i].resize((size[0], int(size[0]*ims[i].size[1]
+                                                     // ims[i].size[0])),
+                                       resample=scaling_filter)
+            else:
+                ims[i] = ims[i].resize((int(size[1]*ims[i].size[0]
+                                            // ims[i].size[1]), size[1]),
+                                       resample=scaling_filter)
+    elif scale == "fitL":
+        for i in range(len(impaths)):
+            if ims[i].size[0] == size[0] and ims[i].size[1] == size[1]:
+                continue
+            elif (ims[i].size[0]/ims[i].size[1] >= size[0]/size[1] and
+                ims[i].size[1] > size[1]):
+                ims[i] = ims[i].resize((size[0], int(size[0]*ims[i].size[1]
+                                                     // ims[i].size[0])),
+                                       resample=scaling_filter)
+            elif (ims[i].size[0]/ims[i].size[1] <= size[0]/size[1] and
+                ims[i].size[0] > size[0]):
+                ims[i] = ims[i].resize((int(size[1]*ims[i].size[0]
+                                            // ims[i].size[1]), size[1]),
+                                       resample=scaling_filter)
+    elif scale == "reshape":
+        for i in range(len(impaths)):
+            if ims[i].size[0] != size[0] or ims[i].size[1] != size[1]:
+                ims[i] = ims[i].resize(size, resample=scaling_filter)
+    else:
+        raise Exception(f"Wrong scale value: {scale}")
     grid = (len(poses), len(poses[0]))
     fullsize = (grid[1]*(size[0]+padding*2), grid[0]*(size[1]+padding*2))
     full = Image.new("RGBA", fullsize, color=bg)
