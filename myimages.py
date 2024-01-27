@@ -92,6 +92,7 @@ def imresiz():
                 pats = os.path.join(pat, sfn)
                 try:
                     os.mkdir(pats)
+                    do0 = False
                 except FileExistsError:
                     print("Folder with this name already exists.")
                     do1 = True
