@@ -89,15 +89,29 @@ def imresiz():
             sf = input("Save to a new folder? (y/n): ")
             if sf == "y" or sf == "Y":
                 sfn = input("Enter folder name: ")
-                os.mkdir(sfn)
                 pats = os.path.join(pat, sfn)
-                do0 = False
+                try:
+                    os.mkdir(pats)
+                except FileExistsError:
+                    print("Folder with this name already exists.")
+                    do1 = True
+                    while do1:
+                        uex = input("Do you still want to continue? You risk "
+                                    +"overwriting of existing images. (y/n): ")
+                        if uex == "y" or uex == "Y":
+                            do1, do0 = False, False
+                            pass
+                        elif uex == "n" or uex == "N":
+                            print("You will be asked again.")
+                            do1, do0 = False, True
+                        else:
+                            print("Wrong input format, please try again.")
             elif sf == "n" or sf == "N":
                 pats = pat
                 do0 = False
             else:
                 print("Wrong input format, please try again.")
-        for i in resiz_inds:
+        for ii, i in enumerate(resiz_inds):
             if scalall:
                 j = 0
             else:
@@ -108,6 +122,7 @@ def imresiz():
                                  "_sc{}".format(scal[j]).replace(".", "p") +
                                  ims[i][ims[i].rfind("."):]))
             im.close()
+            print(f"Saved {ii+1}/{len(resiz_inds)}")
         mfs.prin("Finished.")
         # repeating procedure
         do0 = True
