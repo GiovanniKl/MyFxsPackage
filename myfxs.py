@@ -8,18 +8,30 @@ Sorry for Czech comments. Sometimes they seem apropriate.
 There is no guarantee of compatibility with scripts using this module written
 before last update.
 Created by Jan Klíma on 2022-03-04.
-Updated on 2023-10-23.
+Updated on 2024-02-28.
 """
 
 
 def getr2(y, yfit):
-    """Returns sum of residual squares R^2.
+    """Returns coefficient of determination R^2.
     y - numpy array of experimental data.
-    yfit - numpy array of fit data.
+    yfit - numpy array of fit data (same size as y).
     """
     ss_res = np.sum((y - yfit)**2)
     ss_tot = np.sum((y - np.mean(y))**2)
     return 1 - ss_res/ss_tot
+
+
+def getr2adj(y, yfit, p):
+    """Returns adjusted coefficient of determination R^2_adj
+    as proposed by M. Ezekiel (see wikipedia on R^2).
+    y - numpy array of experimental data.
+    yfit - numpy array of fit data (same size as y).
+    p - int, number of free parameters of the fit
+        (or explanatory variables in the model).
+    """
+    n = len(y)
+    return 1 - (1 - getr2(y, yfit))*(n - 1)/(n - p - 1)
 
 
 def rounc(x):
