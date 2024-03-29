@@ -8,7 +8,7 @@ Sorry for Czech comments. Sometimes they seem apropriate.
 There is no guarantee of compatibility with scripts using this module written
 before last update.
 Created by Jan Klíma on 2022-03-04.
-Updated on 2024-02-28.
+Updated on 2024-03-29.
 """
 
 
@@ -238,6 +238,17 @@ def altline(x0, y0, r, phi, phiunit="deg"):
         return x0+r*np.cos(phi/180*np.pi), y0+r*np.sin(phi/180*np.pi)
     else:
         raise Exception("Unsupported phi unit!")
+
+
+def get_ab(x0, y0, x1, y1):
+    """Returns a, b of a linear function defined by two points:
+    [x0, y0] and [x1, y1].
+    x0, y0, x1, y1 - floats (or same-length ndarray), coordinates
+        on an XY plane.
+    """
+    a = (y1-y0)/(x1-x0)
+    b = y0-a*x0
+    return a, b
 
 
 # ### Aliases due to compatibility with older versions. ###
