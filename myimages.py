@@ -262,7 +262,9 @@ def pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None,
     iscale - int or 2-tuple, inverse scale of the final image,
         (wf,hf) = (wi,hi)//iscale.
     nchars - int, number of different characters to use, equals to number of
-        colors to be recognized. Can be any integer from 2 to 10 (incl.).
+        colors to be recognized. Can be any integer from 2 to 10 (incl.),
+        except for styles having a number at the end of its name, e.g.
+        "extended68" has a maximum of 68 characters.
     chars - str or None, str should contain custom characters to map the colors
         of the image. If given, len(chars) overwrites nchars (len(chars) can be
         larger than 10).
@@ -270,18 +272,37 @@ def pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None,
         If given, the maxwidth overwrites the iscale parameter (useful for
         including text-images e.g. in code).
     style - string, specifies the char-map theme. Available options are:
-        "default", "hi-contrast" or "numbers".
+        "default", "hi-contrast", "numbers", "balanced", or "extended68".
     reverse - bool. If true, reverses the mapping of the image. Default mapping
         starts with " " (blankspace) as white/light color and ends with "W" as
         black/dark color.
     """
-    default = ("", "", " o", " io", " ioW", " ioeW", " .ioeW", " .:ioeW",
+    default = ("", " ", " o", " io", " ioW", " ioeW", " .ioeW", " .:ioeW",
                " .:ioeHW", " .:ioebHW", " .:ioebHBW")
-    hicont = ("", "", " W", "  W", "  WW", "  oWW", "  :oWW", "  .:oWW",
+    hicont = ("", " ", " W", "  W", "  WW", "  oWW", "  :oWW", "  .:oWW",
               "  .:oWWW", "   .:oWWW", "   .:ioWWW")
-    nums = ("0", "01", "012", "0123", "01234", "012345", "0123456", "01234567",
-            "012345678", "0123456789")
-    styles = {"default": default, "hi-contrast": hicont, "numbers": nums}
+    nums = ("", "0", "01", "012", "0123", "01234", "012345", "0123456",
+            "01234567", "012345678", "0123456789")
+    balanced = ("", " ", " &", " /&", " ,/&", " ,*/&", " ,*/#&", " ,*/(#&",
+                " .,*/(#&", " .,*/(#%&", " .,*/(#%&@")
+
+    def gen_map_from_chars(_chars):
+        """Create a character map for all possible lengths from an array
+        of characters.
+        """
+        arr = [_chars]
+        for i in range(len(_chars)):
+            ind = i % len(arr[i]) + 1  # continuously remove every second char
+            arr.append(arr[i][:ind] + arr[i][ind+1:])
+            if len(arr[-1]) == len(arr[-2]):
+                arr[-1] = arr[-1][:-1]  # small fix
+        return tuple(arr[::-1])  # tuple to protect integrity of the char. map
+
+    extended68 = gen_map_from_chars(' .`^",:;Il!i><~+_-?][}{1)(|/tfjrxnuvczX'
+                                    + 'YUJCLQ0OZmwqpdbkhao*#MW&8%B@$')
+    
+    styles = {"default": default, "hi-contrast": hicont, "numbers": nums,
+              "balanced": balanced, "extended68": extended68}
     if chars is None:
         maps = styles[style]
     else:
@@ -303,10 +324,10 @@ def pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None,
         nchars = len(colors)
     if reverse:
         for i in range(nchars):
-            mappin[colors[i][1]] = i
+            mappin[colors[i][1]] = nchars-1-i
     else:
         for i in range(nchars):
-            mappin[colors[i][1]] = nchars-1-i
+            mappin[colors[i][1]] = i
     # im.show()
     if spath is None:
         for j in range(h):
