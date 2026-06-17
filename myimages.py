@@ -8,7 +8,7 @@ def imresiz():
     scale you want in interactive, console-text-input way.
     """
     mfs.prin("Welcome to Image Resizer!")
-    exts = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".mpeg"]
+    exts = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".mpeg"]
     do = True
     while do:
         do0 = True
@@ -112,6 +112,19 @@ def imresiz():
                 do0 = False
             else:
                 print("Wrong input format, please try again.")
+        do0 = True
+        while do0:
+            ex = input("Output file extension (empty for same): ")
+            if ex == "":
+                ex = [ims[i][ims[i].rfind("."):] for i in resiz_inds]
+                do0 = False
+            ex = ("." if ex[0] != "." else "") + ex.lower()
+            if ex not in exts:
+                print("Unsupported file extension, try again. Supported:\n"
+                      + ", ".join(exts))
+                continue
+            ex = [ex for _ in resiz_inds]
+            do0 = False
         for ii, i in enumerate(resiz_inds):
             if scalall:
                 j = 0
@@ -121,7 +134,7 @@ def imresiz():
             im = im.resize((round(im.width*scal[j]), round(im.height*scal[j])))
             im.save(os.path.join(pats, ims[i][:ims[i].rfind(".")] +
                                  "_sc{}".format(scal[j]).replace(".", "p") +
-                                 ims[i][ims[i].rfind("."):]))
+                                 ex[i]))
             im.close()
             print(f"Saved {ii+1}/{len(resiz_inds)}")
         mfs.prin("Finished.")
@@ -300,7 +313,7 @@ def pic2text(impath, spath=None, iscale=1, nchars=2, chars=None, maxwidth=None,
 
     extended68 = gen_map_from_chars(' .`^",:;Il!i><~+_-?][}{1)(|/tfjrxnuvczX'
                                     + 'YUJCLQ0OZmwqpdbkhao*#MW&8%B@$')
-    
+
     styles = {"default": default, "hi-contrast": hicont, "numbers": nums,
               "balanced": balanced, "extended68": extended68}
     if chars is None:
