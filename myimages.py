@@ -116,15 +116,18 @@ def imresiz():
         while do0:
             ex = input("Output file extension (empty for same): ")
             if ex == "":
-                ex = [ims[i][ims[i].rfind("."):] for i in resiz_inds]
+                ex_list = [ims[i][ims[i].rfind("."):] for i in resiz_inds]
                 do0 = False
-            ex = ("." if ex[0] != "." else "") + ex.lower()
-            if ex not in exts:
-                print("Unsupported file extension, try again. Supported:\n"
-                      + ", ".join(exts))
-                continue
-            ex = [ex for _ in resiz_inds]
-            do0 = False
+            else:
+                # normalize extension string
+                ex_norm = ex.lower()
+                ex_norm = ("." if ex_norm[0] != "." else "") + ex_norm
+                if ex_norm not in exts:
+                    print("Unsupported file extension, try again. Supported:\n"
+                          + ", ".join(exts))
+                    continue
+                ex_list = [ex_norm for _ in resiz_inds]
+                do0 = False
         for ii, i in enumerate(resiz_inds):
             if scalall:
                 j = 0
@@ -134,7 +137,7 @@ def imresiz():
             im = im.resize((round(im.width*scal[j]), round(im.height*scal[j])))
             im.save(os.path.join(pats, ims[i][:ims[i].rfind(".")] +
                                  "_sc{}".format(scal[j]).replace(".", "p") +
-                                 ex[i]))
+                                 ex_list[i]))
             im.close()
             print(f"Saved {ii+1}/{len(resiz_inds)}")
         mfs.prin("Finished.")
