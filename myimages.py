@@ -137,7 +137,7 @@ def imresiz():
             im = im.resize((round(im.width*scal[j]), round(im.height*scal[j])))
             im.save(os.path.join(pats, ims[i][:ims[i].rfind(".")] +
                                  "_sc{}".format(scal[j]).replace(".", "p") +
-                                 ex_list[i]))
+                                 ex_list[ii]))
             im.close()
             print(f"Saved {ii+1}/{len(resiz_inds)}")
         mfs.prin("Finished.")
