@@ -132,7 +132,7 @@ def imresiz():
             if scalall:
                 j = 0
             else:
-                j = i
+                j = ii
             im = Image.open(os.path.join(pat, ims[i]))
             im = im.resize((round(im.width*scal[j]), round(im.height*scal[j])))
             im.save(os.path.join(pats, ims[i][:ims[i].rfind(".")] +
